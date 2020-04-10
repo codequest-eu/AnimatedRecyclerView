@@ -6,11 +6,28 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
 class AnimatedRecyclerView @JvmOverloads constructor(
-    private val startAnimationMargin: Float,
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : RecyclerView(context, attrs, defStyleAttr) {
+    private val startAnimationMargin: Float
+
+    init {
+        context.theme.obtainStyledAttributes(
+                attrs,
+                R.styleable.AnimatedRecyclerView,
+                0,
+                0
+            )
+            .apply {
+                try {
+                    startAnimationMargin =
+                        getDimension(R.styleable.AnimatedRecyclerView_startAnimationOffset, 100f)
+                } finally {
+                    recycle()
+                }
+            }
+    }
 
     private val itemHolders: MutableList<AnimatedItemHolder> = mutableListOf()
 
@@ -34,12 +51,15 @@ class AnimatedRecyclerView @JvmOverloads constructor(
     }
 
     private fun View.shouldStartShowAnimation(): Boolean {
-        val viewPosition = getAbsoluteCenterY()
-        return viewPosition >= startAnimationMargin && viewPosition <= height - startAnimationMargin
+        val viewPosition = getCenterY()
+        return viewPosition >= this@AnimatedRecyclerView.top + startAnimationMargin && viewPosition <= this@AnimatedRecyclerView.bottom - startAnimationMargin
     }
 
     private fun View.shouldStartHideAnimation(): Boolean {
-        val viewPosition = getAbsoluteCenterY()
-        return viewPosition < startAnimationMargin || viewPosition > height - startAnimationMargin
+        val viewPosition = getCenterY()
+        return viewPosition < this@AnimatedRecyclerView.top + startAnimationMargin || viewPosition > this@AnimatedRecyclerView.bottom - startAnimationMargin
     }
+
+    private fun View.getCenterY() =
+        (top + bottom) / 2f
 }
