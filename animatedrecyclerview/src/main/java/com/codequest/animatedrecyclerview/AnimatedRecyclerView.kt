@@ -2,6 +2,7 @@ package com.codequest.animatedrecyclerview
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
@@ -29,6 +30,9 @@ class AnimatedRecyclerView @JvmOverloads constructor(
             }
     }
 
+    private val topMarginY: Float by lazy { this@AnimatedRecyclerView.top + startAnimationMargin }
+    private val bottomMarginY: Float by lazy { this@AnimatedRecyclerView.bottom - startAnimationMargin }
+
     private val itemHolders: MutableList<AnimatedItemHolder> = mutableListOf()
 
     fun onAddViewHolder(animatedItemHolder: AnimatedItemHolder) {
@@ -42,24 +46,28 @@ class AnimatedRecyclerView @JvmOverloads constructor(
     override fun onScrolled(dx: Int, dy: Int) {
         super.onScrolled(dx, dy)
 
+        Log.d("OnScrolled", dy.toString())
+
         itemHolders.forEach {
+            val itemView = it.itemView
             when {
-                it.itemView.shouldStartShowAnimation() -> it.startShowAnimation()
-                it.itemView.shouldStartHideAnimation() -> it.startHideAnimation()
+                itemView.didEnterFromTop(dy) -> it.onEnterFromTop()
+                itemView.didEnterFromBottom(dy) -> it.onEnterFromBottom()
+                itemView.didExitToTop(dy) -> it.onExitToTop()
+                itemView.didExitToBottom(dy) -> it.onExitToBottom()
             }
         }
     }
 
-    private fun View.shouldStartShowAnimation(): Boolean {
-        val viewPosition = getCenterY()
-        return viewPosition >= this@AnimatedRecyclerView.top + startAnimationMargin && viewPosition <= this@AnimatedRecyclerView.bottom - startAnimationMargin
-    }
+    private fun View.didEnterFromTop(dy: Int): Boolean =
+        bottom >= topMarginY && bottom + dy < topMarginY
 
-    private fun View.shouldStartHideAnimation(): Boolean {
-        val viewPosition = getCenterY()
-        return viewPosition < this@AnimatedRecyclerView.top + startAnimationMargin || viewPosition > this@AnimatedRecyclerView.bottom - startAnimationMargin
-    }
+    private fun View.didEnterFromBottom(dy: Int): Boolean =
+        top <= bottomMarginY && top + dy > bottomMarginY
 
-    private fun View.getCenterY() =
-        (top + bottom) / 2f
+    private fun View.didExitToTop(dy: Int): Boolean =
+        bottom <= topMarginY && bottom + dy > topMarginY
+
+    private fun View.didExitToBottom(dy: Int): Boolean =
+        top >= bottomMarginY && top + dy < bottomMarginY
 }

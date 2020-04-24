@@ -18,11 +18,27 @@ class PostViewHolder(view: View) : AnimatedItemHolder(view) {
         }
     }
 
-    override fun startShowAnimation() {
-        if (!isShown) {
-            isShown = true
+    override fun onEnterFromTop() {
+        startShowAnimation()
+    }
+
+    override fun onExitToTop() {
+        startExitAnimation()
+    }
+
+    override fun onEnterFromBottom() {
+        startShowAnimation()
+    }
+
+    override fun onExitToBottom() {
+        startExitAnimation()
+    }
+
+    private fun startExitAnimation() {
+        if (isShown) {
+            isShown = false
             animator?.cancel()
-            animator = ValueAnimator.ofFloat(itemView.alpha, 1f).apply {
+            animator = ValueAnimator.ofFloat(itemView.alpha, 0f).apply {
                 addUpdateListener {
                     itemView.alpha = it.animatedValue as Float
                 }
@@ -31,11 +47,11 @@ class PostViewHolder(view: View) : AnimatedItemHolder(view) {
         }
     }
 
-    override fun startHideAnimation() {
-        if (isShown) {
-            isShown = false
+    private fun startShowAnimation() {
+        if (!isShown) {
+            isShown = true
             animator?.cancel()
-            animator = ValueAnimator.ofFloat(itemView.alpha, 0f).apply {
+            animator = ValueAnimator.ofFloat(itemView.alpha, 1f).apply {
                 addUpdateListener {
                     itemView.alpha = it.animatedValue as Float
                 }
