@@ -42,6 +42,7 @@ class PostViewHolder(view: View) : AnimatedItemHolder(view) {
                 addUpdateListener {
                     itemView.alpha = it.animatedValue as Float
                 }
+                duration = ANIMATION_DURATION
                 start()
             }
         }
@@ -55,8 +56,13 @@ class PostViewHolder(view: View) : AnimatedItemHolder(view) {
                 addUpdateListener {
                     itemView.alpha = it.animatedValue as Float
                 }
+                duration = ANIMATION_DURATION
                 start()
             }
         }
+    }
+
+    private companion object {
+        const val ANIMATION_DURATION = 150L
     }
 }
