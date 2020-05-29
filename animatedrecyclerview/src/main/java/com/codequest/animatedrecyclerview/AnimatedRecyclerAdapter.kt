@@ -21,8 +21,8 @@ abstract class AnimatedRecyclerAdapter<T, VH : AnimatedItemHolder>(itemCallback:
         recyclerView?.onAddViewHolder(holder)
     }
 
-    override fun onViewRecycled(holder: VH) {
-        super.onViewRecycled(holder)
+    override fun onViewDetachedFromWindow(holder: VH) {
+        super.onViewDetachedFromWindow(holder)
 
         recyclerView?.onRemoveViewHolder(holder)
     }
