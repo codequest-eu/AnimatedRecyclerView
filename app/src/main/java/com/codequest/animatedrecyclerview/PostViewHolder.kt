@@ -1,5 +1,7 @@
 package com.codequest.animatedrecyclerview
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.view.View
 import kotlinx.android.synthetic.main.view_post.view.*
@@ -19,50 +21,64 @@ class PostViewHolder(view: View) : AnimatedItemHolder(view) {
     }
 
     override fun onEnterFromTop() {
-        startShowAnimation()
+        animateTranslation(
+            startTranslationValue = -ANIMATED_TRANSLATION_AMOUNT,
+            finalTranslationValue = 0f,
+            startAlphaValue = itemView.alpha,
+            finalAlphaValue = 1f
+        )
     }
 
     override fun onExitToTop() {
-        startExitAnimation()
+        animateTranslation(
+            startTranslationValue = 0f,
+            finalTranslationValue = -ANIMATED_TRANSLATION_AMOUNT,
+            startAlphaValue = itemView.alpha,
+            finalAlphaValue = 0f
+        )
     }
 
     override fun onEnterFromBottom() {
-        startShowAnimation()
+        animateTranslation(
+            startTranslationValue = ANIMATED_TRANSLATION_AMOUNT,
+            finalTranslationValue = 0f,
+            startAlphaValue = itemView.alpha,
+            finalAlphaValue = 1f
+        )
     }
 
     override fun onExitToBottom() {
-        startExitAnimation()
+        animateTranslation(
+            startTranslationValue = 0f,
+            finalTranslationValue = ANIMATED_TRANSLATION_AMOUNT,
+            startAlphaValue = itemView.alpha,
+            finalAlphaValue = 0f
+        )
     }
 
-    private fun startExitAnimation() {
-        if (isShown) {
-            isShown = false
-            animator?.cancel()
-            animator = ValueAnimator.ofFloat(itemView.alpha, 0f).apply {
-                addUpdateListener {
-                    itemView.alpha = it.animatedValue as Float
-                }
-                duration = ANIMATION_DURATION
-                start()
-            }
-        }
-    }
+    private fun animateTranslation(
+        startTranslationValue: Float,
+        finalTranslationValue: Float,
+        startAlphaValue: Float,
+        finalAlphaValue: Float
+    ) {
+        val translationAnimator =
+            ObjectAnimator
+                .ofFloat(itemView, "translationX", startTranslationValue, finalTranslationValue)
 
-    private fun startShowAnimation() {
-        if (!isShown) {
-            isShown = true
-            animator?.cancel()
-            animator = ValueAnimator.ofFloat(itemView.alpha, 1f).apply {
-                addUpdateListener {
-                    itemView.alpha = it.animatedValue as Float
-                }
-                duration = ANIMATION_DURATION
-                start()
-            }
+        val alphaAnimator =
+            ObjectAnimator
+                .ofFloat(itemView, "alpha", startAlphaValue, finalAlphaValue)
+
+        AnimatorSet().apply {
+            playTogether(translationAnimator, alphaAnimator)
+            duration = ANIMATION_DURATION
+            start()
         }
     }
 
     private companion object {
         const val ANIMATION_DURATION = 150L
+        const val ANIMATED_TRANSLATION_AMOUNT = 400f
     }
 }
