@@ -2,12 +2,11 @@ package com.codequest.animatedrecyclerview
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
 import android.view.View
 import kotlinx.android.synthetic.main.view_post.view.*
 
 class PostViewHolder(view: View) : AnimatedItemHolder(view) {
-    private var animator: ValueAnimator? = null
+    private var animator: AnimatorSet? = null
     private var isShown = false
 
     fun bind(post: Post) {
@@ -21,6 +20,7 @@ class PostViewHolder(view: View) : AnimatedItemHolder(view) {
     }
 
     override fun onEnterFromTop() {
+        animator?.cancel()
         animateTranslation(
             startTranslationValue = -ANIMATED_TRANSLATION_AMOUNT,
             finalTranslationValue = 0f,
@@ -30,6 +30,7 @@ class PostViewHolder(view: View) : AnimatedItemHolder(view) {
     }
 
     override fun onExitToTop() {
+        animator?.cancel()
         animateTranslation(
             startTranslationValue = 0f,
             finalTranslationValue = -ANIMATED_TRANSLATION_AMOUNT,
@@ -39,6 +40,7 @@ class PostViewHolder(view: View) : AnimatedItemHolder(view) {
     }
 
     override fun onEnterFromBottom() {
+        animator?.cancel()
         animateTranslation(
             startTranslationValue = ANIMATED_TRANSLATION_AMOUNT,
             finalTranslationValue = 0f,
@@ -48,6 +50,7 @@ class PostViewHolder(view: View) : AnimatedItemHolder(view) {
     }
 
     override fun onExitToBottom() {
+        animator?.cancel()
         animateTranslation(
             startTranslationValue = 0f,
             finalTranslationValue = ANIMATED_TRANSLATION_AMOUNT,
@@ -70,7 +73,7 @@ class PostViewHolder(view: View) : AnimatedItemHolder(view) {
             ObjectAnimator
                 .ofFloat(itemView, "alpha", startAlphaValue, finalAlphaValue)
 
-        AnimatorSet().apply {
+        animator = AnimatorSet().apply {
             playTogether(translationAnimator, alphaAnimator)
             duration = ANIMATION_DURATION
             start()
