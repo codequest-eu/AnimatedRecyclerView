@@ -2,7 +2,6 @@ package com.codequest.animatedrecyclerview
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
@@ -45,8 +44,6 @@ class AnimatedRecyclerView @JvmOverloads constructor(
 
     override fun onScrolled(dx: Int, dy: Int) {
         super.onScrolled(dx, dy)
-
-        Log.d("OnScrolled", dy.toString())
 
         itemHolders.forEach {
             val itemView = it.itemView
