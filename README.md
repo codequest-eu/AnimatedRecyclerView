@@ -1,6 +1,8 @@
 # Animated Recycler View
 Android library for animating RecyclerView items when they enter and leave the screen.
 
+![Library in action](https://i.imgur.com/wRy5yir.mp4)
+
 ## How to use
 Library binaries in .aar format can be found in Github [releases section](https://github.com/codequest-eu/AnimatedRecyclerView/releases). You can add them to your application by using Project Structure dialog in Android Studio, or manually, by adding `implementation files('libs/animatedrecyclerview-release-x.x.aar')` line to your dependencies in `build.gradle` file.
 
