@@ -15,7 +15,7 @@
         android:paddingStart="15dp"
         android:paddingEnd="15dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:startAnimationOffset="80dp"
+        app:startAnimationOffset="20dp"
         tools:listitem="@layout/view_post" />
 
 </FrameLayout>

@@ -14,11 +14,11 @@ class AnimatedRecyclerView @JvmOverloads constructor(
 
     init {
         context.theme.obtainStyledAttributes(
-                attrs,
-                R.styleable.AnimatedRecyclerView,
-                0,
-                0
-            )
+            attrs,
+            R.styleable.AnimatedRecyclerView,
+            0,
+            0
+        )
             .apply {
                 try {
                     startAnimationMargin =
@@ -29,8 +29,8 @@ class AnimatedRecyclerView @JvmOverloads constructor(
             }
     }
 
-    private val topMarginY: Float by lazy { this@AnimatedRecyclerView.top + startAnimationMargin }
-    private val bottomMarginY: Float by lazy { this@AnimatedRecyclerView.bottom - startAnimationMargin }
+    private val topMarginY: Float by lazy { startAnimationMargin }
+    private val bottomMarginY: Float by lazy { height - startAnimationMargin }
 
     private val itemHolders: MutableList<AnimatedItemHolder> = mutableListOf()
 

@@ -17,16 +17,19 @@ class PostViewHolder(view: View) : AnimatedItemHolder(view) {
             postBody.text = post.body
             postUserEmail.text = post.userEmail
 
-            val circularProgressDrawable = CircularProgressDrawable(itemView.context)
-            circularProgressDrawable.strokeWidth = 5f
-            circularProgressDrawable.centerRadius = 30f
-            circularProgressDrawable.start()
+            val circularProgressDrawable =
+                CircularProgressDrawable(itemView.context).apply {
+                    strokeWidth = 5f
+                    centerRadius = 30f
+                    start()
+                }
 
             Glide
                 .with(itemView)
                 .load(getAvatarUrl(post))
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .placeholder(circularProgressDrawable)
+                .timeout(5000)
                 .into(postUserAvatar)
         }
     }
