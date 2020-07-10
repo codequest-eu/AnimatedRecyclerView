@@ -3,6 +3,9 @@ package com.codequest.animatedrecyclerview
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.view.View
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import kotlinx.android.synthetic.main.view_post.view.*
 
 class PostViewHolder(view: View) : AnimatedItemHolder(view) {
@@ -13,8 +16,20 @@ class PostViewHolder(view: View) : AnimatedItemHolder(view) {
         itemView.apply {
             postTitle.text = post.title
             postBody.text = post.body
+            postUserEmail.text = post.userEmail
 
-            alpha = 0f
+            val circularProgressDrawable = CircularProgressDrawable(itemView.context)
+            circularProgressDrawable.strokeWidth = 5f
+            circularProgressDrawable.centerRadius = 30f
+            circularProgressDrawable.start()
+
+            Glide
+                .with(itemView)
+                .load("https://api.adorable.io/avatars/200/${post.userEmail}.png")
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .placeholder(circularProgressDrawable)
+                .into(postUserAvatar)
+
             this@PostViewHolder.isShown = false
         }
     }

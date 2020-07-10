@@ -10,8 +10,12 @@
         android:id="@+id/postsRecycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
         android:orientation="vertical"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:startAnimationOffset="80dp" />
+        app:startAnimationOffset="80dp"
+        tools:listitem="@layout/view_post" />
 
 </FrameLayout>
