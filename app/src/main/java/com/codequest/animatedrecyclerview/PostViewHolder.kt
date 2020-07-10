@@ -10,7 +10,6 @@ import kotlinx.android.synthetic.main.view_post.view.*
 
 class PostViewHolder(view: View) : AnimatedItemHolder(view) {
     private var animator: AnimatorSet? = null
-    private var isShown = false
 
     fun bind(post: Post) {
         itemView.apply {
@@ -25,14 +24,15 @@ class PostViewHolder(view: View) : AnimatedItemHolder(view) {
 
             Glide
                 .with(itemView)
-                .load("https://api.adorable.io/avatars/200/${post.userEmail}.png")
+                .load(getAvatarUrl(post))
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .placeholder(circularProgressDrawable)
                 .into(postUserAvatar)
-
-            this@PostViewHolder.isShown = false
         }
     }
+
+    private fun getAvatarUrl(post: Post) =
+        "https://api.adorable.io/avatars/200/${post.userEmail}.png"
 
     override fun onEnterFromTop() {
         animator?.cancel()
@@ -82,7 +82,7 @@ class PostViewHolder(view: View) : AnimatedItemHolder(view) {
     ) {
         val translationAnimator =
             ObjectAnimator
-                .ofFloat(itemView, "translationX", startTranslationValue, finalTranslationValue)
+                .ofFloat(itemView, "translationY", startTranslationValue, finalTranslationValue)
 
         val alphaAnimator =
             ObjectAnimator
@@ -97,6 +97,6 @@ class PostViewHolder(view: View) : AnimatedItemHolder(view) {
 
     private companion object {
         const val ANIMATION_DURATION = 150L
-        const val ANIMATED_TRANSLATION_AMOUNT = 400f
+        const val ANIMATED_TRANSLATION_AMOUNT = 200f
     }
 }
